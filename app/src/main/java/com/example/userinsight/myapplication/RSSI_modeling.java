@@ -1,8 +1,13 @@
 package com.example.userinsight.myapplication;
 
 /**
- * Created by Userinsight on 2017-11-07.
+ * Created by BSM on 2017-11-07.
  */
+
+/**
+ *  두번째 페이지 B. Path-loss modeling with floor losses (Model1)
+ */
+
 
 public class RSSI_modeling {
 
@@ -16,6 +21,7 @@ public class RSSI_modeling {
     private double noise_factor = 1.1;
 
     private double result_rssi;
+    private double weight_rssi;
 
     public RSSI_modeling() {}
 
@@ -26,10 +32,12 @@ public class RSSI_modeling {
 
     public double CalculateRSSI()
     {
-
         result_rssi = tx - 10*coefficientNap*Math.log10(d) - 10*coefficientNap*Math.log10(10) - coefficientFlap*number_floor + noise_factor;
+        weight_rssi = Math.pow(10, result_rssi/10);
 
-        return result_rssi;
+        return weight_rssi;
     }
+
+
 
 }

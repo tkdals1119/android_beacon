@@ -3,6 +3,7 @@ package com.example.userinsight.myapplication;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,14 +30,20 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.result)
     void onClickResultBt()
     {
-        this.tx_power = Double.parseDouble(String.valueOf(text_tx_power.getText()));
-        this.rssi = Double.parseDouble(String.valueOf(text_rssi.getText()));
+        if(TextUtils.isEmpty(text_tx_power.getText()) || TextUtils.isEmpty(text_rssi.getText()))
+        {
+            Toast.makeText(this, "숫자를 입력해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+           this.tx_power = Double.parseDouble(text_tx_power.getText().toString());
+           this.rssi = Double.parseDouble(text_rssi.getText().toString());
 
-        rssi_m = new RSSI_modeling(tx_power);
-        rssi_m.CalculateRSSI(); // 핑거프린트로 측정한 RSSI
+            rssi_m = new RSSI_modeling(tx_power);
+            String result = String.valueOf(rssi_m.CalculateRSSI()); // 핑거프린트로 측정한 RSSI, B번식
 
-        System.out.println("테스트당"+rssi_m.CalculateRSSI());
-        Log.d(TAG, String.valueOf(rssi_m.CalculateRSSI()));
+            text_distance.setText(result);
+        }
     }
 
     @Override
@@ -45,6 +52,5 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
     }
 }
